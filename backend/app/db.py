@@ -2,6 +2,7 @@ import os
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker, declarative_base
 from dotenv import load_dotenv
+from typing import AsyncGenerator
 
 load_dotenv()
 DATABASE_URL = os.getenv(
@@ -21,3 +22,9 @@ async def init_db():
     except Exception:
         # Do not import FastAPI app here — keep DB module independent.
         raise
+
+
+async def get_db() -> AsyncGenerator[AsyncSession, None]:
+    """FastAPI dependency that yields an async DB session."""
+    async with async_session() as session:
+        yield session

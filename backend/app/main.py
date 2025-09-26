@@ -3,6 +3,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import os
 
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
+
 # IMPORTANT: import models so Base knows about tables before create_all
 from . import models                   # noqa: F401
 from .db import engine, Base, init_db  # noqa: F401
@@ -46,6 +49,17 @@ app.include_router(ai.router, tags=["ai"])
 if HAS_CHECK:
     app.include_router(check.router, tags=["check"])
 
+app.mount("/static", StaticFiles(directory="/app/static", html=True), name="static")
+
+
 @app.get("/")
 async def root():
-    return {"name": "StaySafe API", "docs": "/docs", "health": "/healthz"}
+    index_path = "/app/static/index.html"
+    if os.path.exists(index_path):
+        return FileResponse(index_path)
+    return {"message": "StaySafe API - frontend not available"}
+
+
+@app.get("/api/check")
+async def check():
+    return {"message": "Please use POST /api/check with JSON body."}

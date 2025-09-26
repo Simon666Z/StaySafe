@@ -4,7 +4,7 @@ WORKDIR /app
 COPY package.json ./
 RUN npm ci
 COPY . .
-At build time you can pass NEXT_PUBLIC_API_BASE_URL with --build-arg if needed
+# At build time you can pass NEXT_PUBLIC_API_BASE_URL with --build-arg if needed
 RUN npm run build
 
 #--- Run stage ---

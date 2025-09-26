@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "StaySafe",
+  "version": "1.0",
+  "description": "An extension built to enhance online safety.",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "permissions": ["activeTab", "scripting"]
+}

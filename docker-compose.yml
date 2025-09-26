@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: staysafe
+      POSTGRES_PASSWORD: staysafe
+      POSTGRES_DB: staysafe
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    env_file:
+      - ./backend/.env
+    environment:
+      # Fallbacks if not in .env
+      DATABASE_URL: ${DATABASE_URL:-postgresql+asyncpg://staysafe:staysafe@db:5432/staysafe}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000}
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:8000}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:

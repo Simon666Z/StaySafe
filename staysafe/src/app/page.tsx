@@ -120,11 +120,17 @@ export default function Home() {
   }
 
   return (
-    <div className="font-sans bg-gray-900 text-white">
+    <div className="font-sans bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white min-h-screen">
+      {/* Animated background pattern */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      </div>
+
       {/* Fixed, scrollable history panel in the top-left */}
       <div className="fixed top-6 left-6 z-50 w-72 max-h-[70vh] overflow-auto hidden md:block">
         {history.length > 0 && (
-          <div className="bg-gray-800/80 border border-gray-700 rounded-lg p-3 shadow-lg">
+          <div className="bg-gray-800/80 backdrop-blur-sm border border-gray-700/50 rounded-xl p-4 shadow-2xl animate-slide-in-left">
             <HistoryList
               history={history}
               onItemClick={(item) => {
@@ -139,31 +145,33 @@ export default function Home() {
           </div>
         )}
       </div>
-      {/* --- EDIT WAS MADE ON THE LINE BELOW --- */}
+
       <main
-        className={`min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 ${
+        className={`min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 transition-all duration-500 ${
           history.length > 0 ? "md:ml-72" : ""
         }`}
       >
         <div className="w-full max-w-xl">
           {/* We'll wrap the cards in a single div for better animation control */}
           <div className="flex flex-col gap-6">
-            <URLCard
-              url={url}
-              setUrl={setUrl}
-              isLoading={isLoading}
-              onSubmit={handleSubmit}
-            />
+            <div className="animate-fade-in-up">
+              <URLCard
+                url={url}
+                setUrl={setUrl}
+                isLoading={isLoading}
+                onSubmit={handleSubmit}
+              />
+            </div>
 
             {/* Error and Result cards will now appear here */}
             {error && (
-              <div className="text-red-400 bg-red-900/30 border border-red-800 rounded-lg p-4 text-center animate-fade-in">
+              <div className="text-red-400 bg-red-900/30 border border-red-800/50 rounded-xl p-4 text-center animate-fade-in-up backdrop-blur-sm shadow-lg">
                 <strong>Error:</strong> {error}
               </div>
             )}
 
             {result && (
-              <div className="animate-fade-in">
+              <div className="animate-fade-in-up">
                 <ResultCard result={result} />
               </div>
             )}

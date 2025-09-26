@@ -25,20 +25,23 @@ export function ResultCard({ result }: { result: AnalysisResult }) {
   const config = statusConfig[result.status];
 
   return (
-    <div className={clsx("p-5 rounded-lg border w-full text-left", config.card)}>
+    <div className={clsx("p-6 rounded-xl border w-full text-left backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]", config.card)}>
       {/* Product Name */}
-      <p className="font-semibold text-lg text-white/90">{result.product.name}</p>
+      <p className="font-semibold text-xl text-white/90 mb-4 animate-fade-in-up">{result.product.name}</p>
 
       {/* Status */}
-      <div className="flex items-center gap-3 mt-3">
-        <span className={config.header}>{config.icon}</span>
-        <p className={`text-xl font-bold ${config.header}`}>
+      <div className="flex items-center gap-4 mt-4 animate-fade-in-up delay-100">
+        <span className={`${config.header} animate-bounce`}>{config.icon}</span>
+        <p className={`text-2xl font-bold ${config.header} animate-pulse`}>
           {result.status.charAt(0).toUpperCase() + result.status.slice(1)}
         </p>
       </div>
 
       {/* Reason */}
-      <p className="mt-3 text-white/70">{result.reason}</p>
+      <p className="mt-4 text-white/70 text-lg leading-relaxed animate-fade-in-up delay-200">{result.reason}</p>
+      
+      {/* Animated border effect */}
+      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-emerald-500/20 via-cyan-500/20 to-emerald-500/20 opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
     </div>
   );
 }

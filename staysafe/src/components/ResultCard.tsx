@@ -1,40 +1,44 @@
+// ResultCard.tsx
 import clsx from "clsx";
 import { AnalysisResult } from "@/library/types";
+import { CheckCircle2, XCircle, AlertTriangle } from "lucide-react";
 
-interface ResultCardProps {
-  result: AnalysisResult;
-}
-
-export function ResultCard({ result }: ResultCardProps) {
-  const cardClasses = clsx("p-4 rounded-lg border text-left w-full", {
-    "bg-green-50 border-green-300 text-green-800": result.status === "legal",
-    "bg-red-50 border-red-300 text-red-800": result.status === "prohibited",
-    "bg-yellow-50 border-yellow-300 text-yellow-800":
-      result.status === "uncertain",
-  });
-
-  const statusIcons = {
-    legal: "✅",
-    prohibited: "❌",
-    uncertain: "❓",
+export function ResultCard({ result }: { result: AnalysisResult }) {
+  const statusConfig = {
+    legal: {
+      icon: <CheckCircle2 className="h-6 w-6" />,
+      card: "bg-green-900/50 border-green-700 text-green-200",
+      header: "text-green-300",
+    },
+    prohibited: {
+      icon: <XCircle className="h-6 w-6" />,
+      card: "bg-red-900/50 border-red-700 text-red-200",
+      header: "text-red-300",
+    },
+    uncertain: {
+      icon: <AlertTriangle className="h-6 w-6" />,
+      card: "bg-yellow-900/50 border-yellow-700 text-yellow-200",
+      header: "text-yellow-300",
+    },
   };
 
-  return (
-    <div className={cardClasses}>
-      {/* The layout is now a single, simple column */}
-      <div>
-        {/* Product Name */}
-        <p className="font-bold text-base opacity-90">{result.product.name}</p>
+  const config = statusConfig[result.status];
 
-        {/* Status */}
-        <p className="text-xl font-bold mt-2">
-          <span className="mr-2">{statusIcons[result.status]}</span>
+  return (
+    <div className={clsx("p-5 rounded-lg border w-full text-left", config.card)}>
+      {/* Product Name */}
+      <p className="font-semibold text-lg text-white/90">{result.product.name}</p>
+
+      {/* Status */}
+      <div className="flex items-center gap-3 mt-3">
+        <span className={config.header}>{config.icon}</span>
+        <p className={`text-xl font-bold ${config.header}`}>
           {result.status.charAt(0).toUpperCase() + result.status.slice(1)}
         </p>
-
-        {/* Reason */}
-        <p className="mt-2 text-sm">{result.reason}</p>
       </div>
+
+      {/* Reason */}
+      <p className="mt-3 text-white/70">{result.reason}</p>
     </div>
   );
 }

@@ -35,32 +35,31 @@ export function HistoryList({
   };
 
   return (
-    <div className="border-t border-gray-700 pt-6">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold text-white">Legal History</h2>
+     <div> {/* Simplified wrapper */}
+      <div className="flex justify-between items-center mb-3">
+        <h2 className="text-lg font-bold text-white">History</h2>
         <button
           onClick={onClear}
           title="Clear History"
-          className="flex items-center gap-2 text-sm text-gray-400 hover:text-red-400 transition-colors duration-200"
+          className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-red-400 transition-colors p-1"
         >
-          <Trash2 size={16} />
+          <Trash2 size={14} />
           Clear
         </button>
       </div>
-      <ul className="space-y-2 max-h-56 overflow-y-auto pr-2 custom-scrollbar">
+      <ul className="space-y-2 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
         {history.map((item, index) => (
-          <li key={`${index}`}>
+          <li key={`${item.sourceUrl}-${index}`}>
             <button
               type="button"
               onClick={() => onItemClick(item)}
-              className="w-full text-left p-3 bg-gray-900/50 hover:bg-gray-700/80 rounded-lg transition-all duration-200 border border-transparent hover:border-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full text-left p-3 bg-gray-900/60 hover:bg-gray-700/80 rounded-lg 
+                         transition-all duration-200 
+                         border border-gray-700/50 hover:border-emerald-700 
+                         focus:outline-none focus:ring-2 focus:ring-emerald-500"
             >
-              <p className="font-semibold text-white truncate">
-                {item.product.name}
-              </p>
-              <p className={`text-sm font-medium ${statusColors[item.status]}`}>
-                {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
-              </p>
+              <p className="font-semibold text-white truncate">{item.product.name}</p>
+              <p className="text-xs text-gray-400 truncate mt-1">{item.sourceUrl}</p>
             </button>
           </li>
         ))}

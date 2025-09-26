@@ -120,32 +120,34 @@ export default function Home() {
   }
 
   return (
-    <div className="font-sans min-h-screen flex items-center justify-center p-6 sm:p-12 md:pl-[20rem] bg-gray-900">
+    <div className="font-sans bg-gray-900 text-white">
       {/* Fixed, scrollable history panel in the top-left */}
-      <div className="fixed top-6 left-6 z-50 w-72 max-h-[70vh] overflow-auto">
+      <div className="fixed top-6 left-6 z-50 w-72 max-h-[70vh] overflow-auto hidden md:block">
         {history.length > 0 && (
-          <div className="bg-gray-800/90 border border-gray-700 rounded-lg p-3 shadow-lg">
+          <div className="bg-gray-800/80 border border-gray-700 rounded-lg p-3 shadow-lg">
             <HistoryList
               history={history}
-              onItemClick={setResult}
+              onItemClick={(item) => {
+                setResult(item);
+                setError(null); // Clear any existing errors when clicking a history item
+              }}
               onClear={() => {
                 setHistory([]);
+                setResult(null); // Also clear the current result
               }}
             />
           </div>
         )}
       </div>
-      <div className="w-full max-w-3xl bg-gray-800 border border-gray-700 rounded-xl shadow-2xl p-6 md:p-8">
-        <main>
-          <div className="flex flex-col gap-8">
-            {/* Show error if validation fails */}
-            {error && (
-              <div className="text-red-400 bg-red-900/20 border border-red-800 rounded-md p-3">
-                {error}
-              </div>
-            )}
-
-            {/* URL Input Card */}
+      {/* --- EDIT WAS MADE ON THE LINE BELOW --- */}
+      <main
+        className={`min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 ${
+          history.length > 0 ? "md:ml-72" : ""
+        }`}
+      >
+        <div className="w-full max-w-xl">
+          {/* We'll wrap the cards in a single div for better animation control */}
+          <div className="flex flex-col gap-6">
             <URLCard
               url={url}
               setUrl={setUrl}
@@ -153,16 +155,21 @@ export default function Home() {
               onSubmit={handleSubmit}
             />
 
-            {/* Show result when available */}
-            {result ? (
-              <ResultCard result={result} />
-            ) : (
-              // If no result yet, optionally show a small placeholder or nothing
-              <div />
+            {/* Error and Result cards will now appear here */}
+            {error && (
+              <div className="text-red-400 bg-red-900/30 border border-red-800 rounded-lg p-4 text-center animate-fade-in">
+                <strong>Error:</strong> {error}
+              </div>
+            )}
+
+            {result && (
+              <div className="animate-fade-in">
+                <ResultCard result={result} />
+              </div>
             )}
           </div>
-        </main>
-      </div>
+        </div>
+      </main>
     </div>
   );
 }

@@ -25,12 +25,12 @@ export const URLCard: React.FC<URLInputFormProps> = ({
   onSubmit,
 }) => {
   return (
-    <div className="w-full max-w-2xl">
+    <div className="w-full">
       <div className="text-center mb-6">
-        <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500">
+        <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
           Swiss Compliance Checker
         </h1>
-        <p className="text-gray-400 mt-2">
+        <p className="text-gray-400 mt-2 max-w-md mx-auto">
           Enter a product URL to check its import legality.
         </p>
       </div>
@@ -58,10 +58,14 @@ export const URLCard: React.FC<URLInputFormProps> = ({
           </div>
         </div>
 
-        <button
+       <button
           type="submit"
-          disabled={isLoading}
-          className="w-full flex items-center justify-center gap-2 bg-emerald-600 font-bold py-3 px-4 rounded-lg hover:bg-emerald-500 disabled:bg-gray-500 disabled:cursor-not-allowed transition-all duration-300 transform active:scale-95"
+          disabled={isLoading || !url} // Also disable if URL is empty
+          className="w-full flex items-center justify-center gap-2 bg-emerald-600 font-bold py-3 px-4 rounded-lg text-white
+                     hover:bg-emerald-500 
+                     focus:outline-none focus:ring-4 focus:ring-emerald-500/50
+                     disabled:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed 
+                     transition-all duration-300 transform active:scale-95"
         >
           {isLoading ? (
             <>

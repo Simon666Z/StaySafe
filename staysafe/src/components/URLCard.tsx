@@ -45,10 +45,12 @@ export const URLCard: React.FC<URLInputFormProps> = ({
               <Link className="h-5 w-5 text-gray-500" />
             </div>
             <input
-              type="url"
+              type="text"
               id="product-url"
               value={url}
-              onChange={(e) => setUrl(e.target.value)}
+              onChange={(e) => {
+                setUrl(e.target.value);
+              }}
               placeholder="e.g., https://www.e-commerce.com/product/..."
               className="w-full bg-gray-700 border border-gray-600 rounded-lg py-3 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-shadow duration-300"
               disabled={isLoading}

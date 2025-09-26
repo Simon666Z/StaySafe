@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ResultCard } from "@/components/ResultCard";
 import { URLCard } from "@/components/URLCard";
-import { AnalysisResult } from "@/lib/types";
+import { AnalysisResult } from "@/library/types";
 
 const mockResult: AnalysisResult = {
   status: "uncertain",
@@ -11,7 +11,6 @@ const mockResult: AnalysisResult = {
   product: {
     name: "My Product",
   },
-  sourceLink: "https://www.example.com/regulation",
 };
 
 export default function Home() {
@@ -25,17 +24,37 @@ export default function Home() {
   // State to store the final result from the AI check
   const [result, setResult] = useState<AnalysisResult | null>(null);
 
+  // Accepts full http(s) URLs or domain-like inputs (example.com),
+  // but rejects single-word hosts like "fda". Also allows localhost and IPs.
+  function isValidUrl(input: string): boolean {
+    if (!input) return false;
+    // Try as-is first (handles proper http(s) URLs)
+    try {
+      const parsed = new URL(input);
+      const host = parsed.hostname || "";
+      return (
+        host === "localhost" || host.includes(".") || /^[0-9:.]+$/.test(host) // IPv4/IPv6-ish
+      );
+    } catch {
+      // If missing scheme, try prepending https:// and re-parse
+      try {
+        const parsed = new URL("https://" + input);
+        const host = parsed.hostname || "";
+        return (
+          host === "localhost" || host.includes(".") || /^[0-9:.]+$/.test(host)
+        );
+      } catch {
+        return false;
+      }
+    }
+  }
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
     // 1. --- Basic validation ---
-    if (!url) {
-      setError("Please enter a product URL to check.");
-      return;
-    }
-    // A simple regex to check if the input looks like a URL.
-    if (!/^(https?:\/\/)/.test(url)) {
-      setError("Please enter a valid URL (e.g., https://...).");
+    if (!url || !isValidUrl(url)) {
+      setError("Please enter a valid URL to check.");
       return;
     }
 
@@ -87,6 +106,14 @@ export default function Home() {
             </div>
           )}
 
+          <URLCard
+            url={url}
+            setUrl={setUrl}
+            isLoading={isLoading}
+            onSubmit={handleSubmit}
+          />
+          {/* Visible debug output so you can see the value update without opening DevTools */}
+
           {/* Show result when available */}
           {result ? (
             <ResultCard result={result} />
@@ -94,13 +121,6 @@ export default function Home() {
             // If no result yet, optionally show a small placeholder or nothing
             <div />
           )}
-
-          <URLCard
-            url={url}
-            setUrl={setUrl}
-            isLoading={isLoading}
-            onSubmit={handleSubmit}
-          />
         </main>
       </div>
     </div>

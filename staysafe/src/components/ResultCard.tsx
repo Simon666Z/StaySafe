@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { AnalysisResult } from "@/lib/types";
+import { AnalysisResult } from "@/library/types";
 
 interface ResultCardProps {
   result: AnalysisResult;
@@ -34,16 +34,6 @@ export function ResultCard({ result }: ResultCardProps) {
 
         {/* Reason */}
         <p className="mt-2 text-sm">{result.reason}</p>
-
-        {/* Source Link */}
-        <a
-          href={result.sourceLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-600 text-sm font-semibold mt-3 inline-block hover:underline"
-        >
-          View Official Regulation →
-        </a>
       </div>
     </div>
   );

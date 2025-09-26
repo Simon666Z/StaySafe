@@ -1,7 +1,7 @@
 #--- Build stage ---
 FROM node:20-alpine AS builder
 WORKDIR /app
-COPY package.json ./
+COPY package*.json ./
 RUN npm ci
 COPY . .
 # At build time you can pass NEXT_PUBLIC_API_BASE_URL with --build-arg if needed

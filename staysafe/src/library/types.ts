@@ -5,4 +5,5 @@ export interface AnalysisResult {
   product: {
     name: string;
   };
+  sourceUrl: string;
 }

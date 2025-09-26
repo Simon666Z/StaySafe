@@ -12,7 +12,7 @@ export async function POST(req: Request) {
 
     // Simulate some server-side processing / AI check. Replace this with
     // real backend logic or calls to an AI service.
-    await new Promise((res) => setTimeout(res, 5000));
+    await new Promise((res) => setTimeout(res, 1000));
 
     // Very small heuristic for demo purposes
     const lower = String(url).toLowerCase();
@@ -30,6 +30,7 @@ export async function POST(req: Request) {
       status,
       reason: "Server-checked (simulated): result produced by backend logic.",
       product: { name: String(url) },
+      sourceUrl: url,
     };
 
     return NextResponse.json(result);
